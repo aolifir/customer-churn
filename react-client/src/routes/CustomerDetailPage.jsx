@@ -87,11 +87,14 @@ export default function CustomerDetailPage({ customerId, onBack }) {
     }
   }, [customerId]);
 
-  // Processes state machine updates cleanly over to your Django PATCH view
-  const handleOutreachSave = async (targetMachineState) => {
+    const handleOutreachSave = async (targetMachineState) => {
     setSyncState('loading');
+
+    // 🚀 READ PROPER CASING: Use customer.customerID to match your Django serializer keys exactly
+    const activeId = customer?.customerID || customerId;
+
     try {
-      const response = await fetch(`http://127.0.0{customerId}/outreach/`, {
+      const response = await fetch(`http://localhost:8000/api/customers/${activeId}/outreach/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -106,7 +109,6 @@ export default function CustomerDetailPage({ customerId, onBack }) {
 
       const updatedData = await response.json();
 
-      // Update local state copy to match memory cache changes smoothly
       setCustomer(prev => ({
         ...prev,
         OutreachStatus: updatedData.new_status
@@ -118,6 +120,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
       setSyncState('error');
     }
   };
+
 
   // 1. ACTIVE SERVER RUNTIME LOADING INTERFACE
   if (loading) {

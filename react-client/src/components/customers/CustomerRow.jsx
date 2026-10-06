@@ -43,7 +43,7 @@ export default function CustomerRow({ customer, onClick, rowBg }) {
         {customer.tenure} {Number(customer.tenure) === 1 ? 'month' : 'months'}
       </td>
       <td className="px-6 py-4 text-slate-700 font-bold">
-        \${Number(customer.MonthlyCharges || 0).toFixed(2)}
+        ${Number(customer.MonthlyCharges || 0).toFixed(2)}
       </td>
       <td className="px-6 py-4">
         <span className={getStatusBadge(customer.OutreachStatus || 'Not Contacted')}>

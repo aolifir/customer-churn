@@ -133,8 +133,40 @@ MAILERS = {
     },
 }
 
-# 🚀 THE ULTIMATE FIX: Completely replace your old CORS_ALLOWED_ORIGINS block with this:
+
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^http://localhost:\d+$",
     r"^http://127\.0\.0\.1:\d+$",
 ]
+
+# 📊 STRUCTURED LOGGING CONFIGURATION
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'structured': {
+            'format': '[%(asctime)s] LEVEL=%(levelname)s MODULE=%(module)s MESSAGE="%(message)s"',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'structured',
+        },
+    },
+    'loggers': {
+        # Intercepts all core system, network, and application-level log lines
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'customer_churn': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}

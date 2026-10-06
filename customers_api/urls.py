@@ -59,12 +59,12 @@ Including another URLconf
 
 
 from django.urls import path
-from customer_churn.views import customer_list_view, customer_detail_api_view, customer_outreach_patch_view
+from customer_churn.views import customer_list_view, customer_detail_api_view, customer_outreach_patch_view, model_info_api_view
 
 urlpatterns = [
     path('api/customers/', customer_list_view, name='customer-list'),
+    path('api/customers/model-info/', model_info_api_view, name='model-info'),
     path('api/customers/<str:customer_id>/', customer_detail_api_view, name='customer-detail'),
-
     # Matches the exact route structure target called by your react-client api endpoints
     path('api/customers/<str:customer_id>/outreach/', customer_outreach_patch_view, name='customer-outreach-patch'),
 ]
