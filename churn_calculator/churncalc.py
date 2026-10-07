@@ -72,11 +72,7 @@ MODEL_INFO_METADATA = {
 
 
 def calculate_churn_risk(data) -> str:
-    """Calculates customer churn risk tiers based on rule-based logic boundaries.
 
-    Skips calculation if the customer has already churned.
-    """
-    # Force incoming serialized records safely into a normalized dictionary lookup format
     if hasattr(data, 'to_dict'):
         d = data.to_dict()
     elif isinstance(data, dict):
@@ -84,13 +80,11 @@ def calculate_churn_risk(data) -> str:
     else:
         d = getattr(data, '__dict__', {})
 
-    # 🚀 CORRECTION CORNER: Check if they have already left the company
-    # Standardize to uppercase comparison to prevent string case issues
     has_churned = str(d.get("Churn", "")).strip().upper()
     if has_churned == "YES":
         return "Churned"
 
-    # Extract formatting values for active customers with clear fallback strings
+    # Extract formatting values
     contract = str(d.get("Contract", "")).strip()
     payment = str(d.get("PaymentMethod", "")).strip()
     internet = str(d.get("InternetService", "")).strip()
@@ -106,8 +100,6 @@ def calculate_churn_risk(data) -> str:
         senior_citizen = str(d.get("SeniorCitizen", "0")).strip()
     except (ValueError, TypeError):
         tenure, monthly_charges, senior_citizen = 0, 0.0, "0"
-
-    # --- ACTIVE CUSTOMER RULE LOGIC PIPELINE EVALUATION ---
 
     # Rule Blanket 4: Enterprise Anchors (Low Risk)
     if contract == "Two year" or tenure > 48:

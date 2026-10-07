@@ -1,29 +1,50 @@
 import { useState, useEffect, useCallback } from 'react';
-import { customersApi } from '../api/customersApi';
 
-export const useCustomers = () => {
+export function useCustomers(filters = {}) {
   const [customers, setCustomers] = useState([]);
+  const [metadata, setMetadata] = useState({ total_records: 0, total_pages: 1, has_next: false, has_previous: false });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { page, search, risk, status, contract } = filters;
 
   const fetchCustomers = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await customersApi.getAll();
-      // Safe boundary check if payload returns a nested object or a direct array
-      const targetArray = Array.isArray(data) ? data : data.results || [];
-      setCustomers(targetArray);
+
+      let backendStatus = status || 'All';
+      if (status === 'Not Contacted') backendStatus = 'NOT_CONTACTED';
+      if (status === 'In Progress') backendStatus = 'IN_PROGRESS';
+      if (status === 'Resolved') backendStatus = 'RESOLVED';
+
+      let backendRisk = risk || 'All';
+
+      const queryParams = new URLSearchParams({
+        page: page || 1,
+        search: search || '',
+        risk: backendRisk,
+        status: backendStatus,
+        contract: contract || 'All'
+      });
+
+      const response = await fetch(`http://localhost:8000/api/customers/?${queryParams.toString()}`);
+      if (!response.ok) throw new Error('Network bridge failed to query server metrics.');
+
+      const payload = await response.json();
+
+      setCustomers(payload.customers);
+      setMetadata(payload.metadata);
     } catch (err) {
-      setError('Failed to fetch customer directory records from the Django backend server.');
+      setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, search, risk, status, contract]);
 
   useEffect(() => {
     fetchCustomers();
   }, [fetchCustomers]);
 
-  return { customers, setCustomers, loading, error, refetch: fetchCustomers };
-};
+  return { customers, metadata, loading, error, refetch: fetchCustomers };
+}

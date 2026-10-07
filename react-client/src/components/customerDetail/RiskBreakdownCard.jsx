@@ -1,7 +1,6 @@
 import React from 'react';
 
 export default function RiskBreakdownCard({ customer, modelInfo }) {
-  // Grab the evaluation calculated directly by your churncalc.py backend script
   const backendTier = customer.Churn_Risk_Tier;
 
   const renderStatusAlert = () => {

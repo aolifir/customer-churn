@@ -25,7 +25,6 @@ export default function ModelInfoPage({ onBack }) { // 🚀 Accept onBack proper
   return (
     <div className="space-y-6 max-w-5xl mx-auto p-4 animate-fade-in">
 
-      {/* 🚀 BACK LINK CONTROLLER ROW */}
       <div className="border-b border-slate-200 pb-4">
         <button
           onClick={onBack}

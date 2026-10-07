@@ -1,50 +1,3 @@
-// import React from 'react';
-// import { useCustomer } from '../hooks/useCustomer';
-// import { useModelInfo } from '../hooks/useModelInfo';
-// import { useUpdateOutreach } from '../hooks/useUpdateOutreach';
-// import CustomerProfileCard from '../components/customerDetail/CustomerProfileCard';
-// import RiskBreakdownCard from '../components/customerDetail/RiskBreakdownCard';
-// import OutreachStatusPanel from '../components/customerDetail/OutreachStatusPanel';
-// import LoadingSpinner from '../components/ui/LoadingSpinner';
-// import ErrorMessage from '../components/ui/ErrorMessage';
-//
-// export default function CustomerDetailPage({ customerId, onBack }) {
-//   const { customer, loading: cLoading, error: cError, refetch } = useCustomer(customerId);
-//   const { modelInfo } = useModelInfo();
-//   const { updateOutreach, status: syncState } = useUpdateOutreach();
-//
-//   if (cError) return <ErrorMessage message={cError} onRetry={refetch} />;
-//   if (cLoading || !customer) return <LoadingSpinner />;
-//
-//   const handleStatusCommit = async (newStatus) => {
-//     const clear = await updateOutreach(customer.customerID, newStatus);
-//     if (clear) customer.OutreachStatus = newStatus;
-//   };
-//
-//   return (
-//     <div className="space-y-6 max-w-4xl mx-auto">
-//       <button onClick={onBack} className="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-1">
-//         ← Return to Main Workspace Portfolio
-//       </button>
-//
-//       <div className="border-b border-slate-200 pb-4">
-//         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Account Diagnostics Portfolio Target</span>
-//         <h2 className="text-xl font-mono font-bold text-slate-800">{customer.customerID}</h2>
-//       </div>
-//
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//         <div className="md:col-span-2 space-y-6">
-//           <CustomerProfileCard customer={customer} />
-//           <RiskBreakdownCard customer={customer} modelInfo={modelInfo} />
-//         </div>
-//         <div>
-//           <OutreachStatusPanel currentStatus={customer.OutreachStatus} onSave={handleStatusCommit} syncState={syncState} />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 import React, { useState, useEffect } from 'react';
 import { customersApi } from '../api/customersApi';
 import CustomerProfileCard from '../components/customerDetail/CustomerProfileCard';
@@ -72,7 +25,6 @@ export default function CustomerDetailPage({ customerId, onBack }) {
         }
       } catch (err) {
         if (isMounted) {
-          // Captures specific text strings passed back from your views.py try/except parameters
           setServerError(err.message || 'The requested customer profile could not be loaded.');
         }
       } finally {
@@ -90,7 +42,6 @@ export default function CustomerDetailPage({ customerId, onBack }) {
     const handleOutreachSave = async (targetMachineState) => {
     setSyncState('loading');
 
-    // 🚀 READ PROPER CASING: Use customer.customerID to match your Django serializer keys exactly
     const activeId = customer?.customerID || customerId;
 
     try {
@@ -134,7 +85,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
     );
   }
 
-  // 2. ERROR STATE ESCAPE ROUTE INTERFACE (Fixes the 404/500 lockup trap)
+  // 2. ERROR STATE ESCAPE ROUTE INTERFACE
   if (serverError) {
     return (
       <div className="max-w-2xl mx-auto my-12 bg-white rounded-2xl border border-slate-200 p-8 shadow-lg space-y-6 text-center animate-fade-in">

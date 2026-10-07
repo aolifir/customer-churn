@@ -1,11 +1,10 @@
 from rest_framework import serializers
 from customer_churn.data_access.memory_store import get_data
-# 🚀 PROPER REFERENCE: Import directly from your custom directory module path
 from churn_calculator.churncalc import calculate_churn_risk
 
 
 class CustomerSerializer(serializers.Serializer):
-    """Dynamic serializer that references churncalc rules on-the-fly per row entry."""
+    """Dynamic serializer"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -23,9 +22,7 @@ class CustomerSerializer(serializers.Serializer):
             else:
                 self.fields[column_name] = serializers.CharField(required=False, allow_blank=True)
 
-        # Register the field pointer back out to our shared project view schema
         self.fields['Churn_Risk_Tier'] = serializers.SerializerMethodField()
 
     def get_Churn_Risk_Tier(self, obj) -> str:
-        # Executes external calculation strictly for the active paginated list record row
         return calculate_churn_risk(obj)

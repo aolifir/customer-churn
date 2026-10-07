@@ -3,8 +3,6 @@ from unittest.mock import patch
 from django.test import SimpleTestCase
 from rest_framework import status
 from rest_framework.test import APIRequestFactory
-
-# Import the core logic pipelines we are validating
 from churn_calculator.churncalc import calculate_churn_risk
 from customer_churn.views import customer_outreach_patch_view
 

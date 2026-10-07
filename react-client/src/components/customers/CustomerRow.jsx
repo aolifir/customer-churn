@@ -13,10 +13,7 @@ export default function CustomerRow({ customer, onClick, rowBg }) {
   return (
     <tr
       onClick={() => onClick(customer.customerID)}
-      /*
-        The negative offset (-outline-offset-2) pins the sharp border internally inside the cell boundaries.
-        This completely prevents the data columns from shifting or stuttering on mouse hover.
-      */
+
       className={`
         ${rowBg || 'bg-white'} 
         hover:bg-indigo-50/40 
