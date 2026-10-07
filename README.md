@@ -49,8 +49,8 @@ npm run dev
 ---
 ## Design Considerations
 ### 1. Framework choice
-**Backend:** Django REST Framework. Chosen due to my experience with it, and clean organization with URL routing. It was the best choice for the assessment.
-**Frontend:** ReactJS. Also chosen for by best experience, and is famously paired with Django REST API. It also lets users filter customer list instantly without reloading.
+* **Backend:** Django REST Framework. Chosen due to my experience with it, and clean organization with URL routing. It was the best choice for the assessment.
+* **Frontend:** ReactJS. Also chosen for by best experience, and is famously paired with Django REST API. It also lets users filter customer list instantly without reloading.
 
 ### 2. Data Modeling and Risk-Scoring
 The data set is loaded at the start from `Customer-Churn.csv`, and is parsed and managed as in-memory Pandas dataframe instance during runtime.
